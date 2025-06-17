@@ -1,0 +1,80 @@
+{
+  "agent_name": "tmp5usm6kzc",
+  "agent_path": "/tmp/tmp5usm6kzc",
+  "output_directory": "/tmp/tmp5usm6kzc",
+  "analysis": {
+    "main_function": "from_llm_and_tools",
+    "main_class": "ChatAgent",
+    "required_imports": [
+      "from langchain_core.language_models import BaseLanguageModel",
+      "from langchain_core.tools import BaseTool",
+      "from langchain_core.prompts.chat import ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate",
+      "from langchain.agents.chat.base import ChatAgent",
+      "from langchain.agents.chat.output_parser import ChatOutputParser",
+      "from langchain.agents import AgentExecutor",
+      "from typing import Sequence, Optional"
+    ],
+    "required_parameters": {
+      "llm": "BaseLanguageModel instance - the language model to use for the agent",
+      "tools": "Sequence[BaseTool] - list of tools available to the agent",
+      "prompt": "ChatPromptTemplate with system and human messages, created automatically by create_prompt method",
+      "other_params": "Optional parameters include callback_manager, output_parser, system_message_prefix, system_message_suffix, human_message, format_instructions, and input_variables"
+    },
+    "prompt_requirements": {
+      "required_variables": [
+        "input",
+        "agent_scratchpad"
+      ],
+      "variable_descriptions": {
+        "input": "The input question/query from the user",
+        "agent_scratchpad": "The agent's working memory containing previous thoughts, actions, and observations"
+      },
+      "special_placeholders": [],
+      "prompt_pattern": "ChatPromptTemplate with SystemMessagePromptTemplate (containing tools description and format instructions) and HumanMessagePromptTemplate with '{input}\\n\\n{agent_scratchpad}'",
+      "hub_pull_pattern": "Not found - uses custom prompt creation via create_prompt method"
+    },
+    "usage_example": "agent = ChatAgent.from_llm_and_tools(llm=llm, tools=tools)\nagent_executor = AgentExecutor(agent=agent, tools=tools)\nresult = agent_executor.invoke({\"input\": \"user question\"})",
+    "input_format": "Dictionary with 'input' key containing the user's question/query",
+    "output_format": "AgentFinish object with final answer in output['output'] field, or intermediate AgentAction objects during execution",
+    "special_requirements": [
+      "Tools must accept single string input (validated by validate_tools_single_input)",
+      "Agent is deprecated and will be removed in version 1.0",
+      "Uses JSON blob format for specifying actions with 'action' and 'action_input' keys",
+      "Requires specific format with Question/Thought/Action/Observation pattern",
+      "Must end with 'Final Answer:' for final responses"
+    ],
+    "agent_type": "Chat-based ReAct agent using JSON action format",
+    "execution_pattern": "Should be wrapped in AgentExecutor for proper execution with tools"
+  },
+  "generation_success": true,
+  "app_py_generated": true,
+  "config_used": {
+    "llm_model": "claude-opus-4-20250514",
+    "temperature": 0.7,
+    "max_tokens": 2000,
+    "default_tools": [
+      "search",
+      "calculator"
+    ],
+    "default_input": "Hello, how can you help me?",
+    "agent_config": {
+      "verbose": true,
+      "max_iterations": 10,
+      "early_stopping_method": "generate"
+    },
+    "output_format": "json",
+    "include_metadata": true,
+    "config_loading": {
+      "load_input_json": true,
+      "allow_config_override": true
+    },
+    "error_handling": {
+      "log_level": "INFO",
+      "save_errors_to_output": true
+    },
+    "tool_config": {
+      "handle_import_errors": true,
+      "warn_on_missing_tools": true
+    }
+  }
+}
