@@ -1,0 +1,81 @@
+{
+  "agent_name": "tmph58vxrvo",
+  "agent_path": "/tmp/tmph58vxrvo",
+  "output_directory": "/tmp/tmph58vxrvo",
+  "analysis": {
+    "main_function": "from_llm_and_tools",
+    "main_class": "ChatAgent",
+    "required_imports": [
+      "from langchain_core.language_models import BaseLanguageModel",
+      "from langchain_core.tools import BaseTool",
+      "from langchain_core.prompts.chat import ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate",
+      "from langchain.agents.chat.base import ChatAgent",
+      "from langchain.agents.agent import AgentExecutor",
+      "from typing import Sequence, Optional"
+    ],
+    "required_parameters": {
+      "llm": "BaseLanguageModel instance - the language model to use for the agent",
+      "tools": "Sequence[BaseTool] - list of tools available to the agent",
+      "prompt": "ChatPromptTemplate with system and human messages, created automatically by create_prompt method",
+      "other_params": "Optional parameters include callback_manager, output_parser, system_message_prefix, system_message_suffix, human_message, format_instructions, and input_variables"
+    },
+    "prompt_requirements": {
+      "required_variables": [
+        "input",
+        "agent_scratchpad"
+      ],
+      "variable_descriptions": {
+        "input": "The input question/query from the user",
+        "agent_scratchpad": "The agent's intermediate work and observations",
+        "tool_names": "Comma-separated list of available tool names (injected into format_instructions)",
+        "tools": "Tool descriptions formatted as 'tool_name: tool_description' (injected into system message)"
+      },
+      "special_placeholders": [],
+      "prompt_pattern": "ChatPromptTemplate with SystemMessagePromptTemplate (containing tool descriptions and format instructions) and HumanMessagePromptTemplate with '{input}\\n\\n{agent_scratchpad}'",
+      "hub_pull_pattern": "Not used - prompt is created programmatically via create_prompt method"
+    },
+    "usage_example": "agent = ChatAgent.from_llm_and_tools(llm=llm, tools=tools)\nagent_executor = AgentExecutor(agent=agent, tools=tools)\nresult = agent_executor.invoke({\"input\": \"What is the weather in SF?\"})",
+    "input_format": "Dictionary with 'input' key containing the user's question/query",
+    "output_format": "AgentFinish object with final answer in output['output'] field, or intermediate AgentAction objects during execution",
+    "special_requirements": [
+      "Tools must accept single string input (validated by validate_tools_single_input)",
+      "Agent uses JSON format for specifying actions with 'action' and 'action_input' keys",
+      "Agent stops on 'Observation:' string",
+      "Final answer must be prefixed with 'Final Answer:'",
+      "This agent is deprecated as of version 0.1.0 and will be removed in 1.0"
+    ],
+    "agent_type": "chat",
+    "execution_pattern": "Should be wrapped in AgentExecutor for proper execution with tools and observation handling"
+  },
+  "generation_success": true,
+  "app_py_generated": true,
+  "config_used": {
+    "llm_model": "claude-opus-4-20250514",
+    "temperature": 0.7,
+    "max_tokens": 2000,
+    "default_tools": [
+      "search",
+      "calculator"
+    ],
+    "default_input": "Hello, how can you help me?",
+    "agent_config": {
+      "verbose": true,
+      "max_iterations": 10,
+      "early_stopping_method": "generate"
+    },
+    "output_format": "json",
+    "include_metadata": true,
+    "config_loading": {
+      "load_input_json": true,
+      "allow_config_override": true
+    },
+    "error_handling": {
+      "log_level": "INFO",
+      "save_errors_to_output": true
+    },
+    "tool_config": {
+      "handle_import_errors": true,
+      "warn_on_missing_tools": true
+    }
+  }
+}
