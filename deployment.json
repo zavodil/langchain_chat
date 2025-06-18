@@ -1,0 +1,82 @@
+{
+  "agent_name": "tmpmiv4lklv",
+  "agent_path": "/tmp/tmpmiv4lklv",
+  "output_directory": "/tmp/tmpmiv4lklv",
+  "analysis": {
+    "main_function": "from_llm_and_tools",
+    "main_class": "ChatAgent",
+    "required_imports": [
+      "from langchain_core.language_models import BaseLanguageModel",
+      "from langchain_core.tools import BaseTool",
+      "from langchain_core.agents import AgentAction, AgentFinish",
+      "from langchain_core.prompts.chat import ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate",
+      "from langchain.agents.agent import Agent, AgentOutputParser",
+      "from langchain.agents.chat.output_parser import ChatOutputParser",
+      "from langchain.agents.chat.prompt import FORMAT_INSTRUCTIONS, HUMAN_MESSAGE, SYSTEM_MESSAGE_PREFIX, SYSTEM_MESSAGE_SUFFIX",
+      "from langchain.chains.llm import LLMChain",
+      "from typing import Sequence, Optional, Any"
+    ],
+    "required_parameters": {
+      "llm": "BaseLanguageModel instance - The language model to use for the agent",
+      "tools": "Sequence[BaseTool] - A list of tools available to the agent",
+      "prompt": "ChatPromptTemplate created automatically by create_prompt method with system and human messages",
+      "other_params": "Optional parameters include callback_manager, output_parser, system_message_prefix, system_message_suffix, human_message, format_instructions, and input_variables"
+    },
+    "prompt_requirements": {
+      "required_variables": [
+        "input",
+        "agent_scratchpad"
+      ],
+      "variable_descriptions": {
+        "input": "The input question/task from the user",
+        "agent_scratchpad": "The agent's working memory containing previous thoughts, actions, and observations"
+      },
+      "special_placeholders": [],
+      "prompt_pattern": "ChatPromptTemplate with SystemMessagePromptTemplate (containing tools description and format instructions) and HumanMessagePromptTemplate with '{input}\\n\\n{agent_scratchpad}'",
+      "hub_pull_pattern": "Not found in this implementation"
+    },
+    "usage_example": "agent = ChatAgent.from_llm_and_tools(\n    llm=llm,\n    tools=tools,\n    system_message_prefix=\"Answer the following questions as best you can. You have access to the following tools:\",\n    format_instructions=FORMAT_INSTRUCTIONS,\n    human_message=\"{input}\\n\\n{agent_scratchpad}\"\n)",
+    "input_format": "String input containing the user's question or task",
+    "output_format": "AgentAction (with action name and action_input) or AgentFinish (with final answer)",
+    "special_requirements": [
+      "Tools must have single input (validated by validate_tools_single_input)",
+      "Agent uses JSON blob format for specifying actions",
+      "Output must follow specific format with 'Thought:', 'Action:', 'Observation:' pattern",
+      "Final answer must be preceded by 'Final Answer:' text",
+      "This agent is deprecated as of version 0.1.0"
+    ],
+    "agent_type": "ChatAgent - A conversational agent that uses chat-based prompts",
+    "execution_pattern": "Should be used with AgentExecutor, processes through thought/action/observation cycles until reaching final answer"
+  },
+  "generation_success": true,
+  "app_py_generated": true,
+  "config_used": {
+    "llm_model": "claude-opus-4-20250514",
+    "temperature": 0.7,
+    "max_tokens": 2000,
+    "default_tools": [
+      "search",
+      "calculator"
+    ],
+    "default_input": "Hello, how can you help me?",
+    "agent_config": {
+      "verbose": true,
+      "max_iterations": 10,
+      "early_stopping_method": "generate"
+    },
+    "output_format": "json",
+    "include_metadata": true,
+    "config_loading": {
+      "load_input_json": true,
+      "allow_config_override": true
+    },
+    "error_handling": {
+      "log_level": "INFO",
+      "save_errors_to_output": true
+    },
+    "tool_config": {
+      "handle_import_errors": true,
+      "warn_on_missing_tools": true
+    }
+  }
+}
