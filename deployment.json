@@ -1,0 +1,81 @@
+{
+  "agent_name": "tmp_amyv3mz",
+  "agent_path": "/tmp/tmp_amyv3mz",
+  "output_directory": "/tmp/tmp_amyv3mz",
+  "analysis": {
+    "main_function": "from_llm_and_tools",
+    "main_class": "ChatAgent",
+    "required_imports": [
+      "from langchain_core.language_models import BaseLanguageModel",
+      "from langchain_core.tools import BaseTool",
+      "from langchain_core.agents import AgentAction, AgentFinish",
+      "from langchain_core.prompts.chat import ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate",
+      "from langchain.agents.chat.base import ChatAgent",
+      "from langchain.agents.chat.output_parser import ChatOutputParser",
+      "from langchain.agents.agent import AgentExecutor",
+      "from typing import Sequence, Optional, Any"
+    ],
+    "required_parameters": {
+      "llm": "BaseLanguageModel instance - The language model to use for the agent",
+      "tools": "Sequence[BaseTool] - A list of tools available to the agent",
+      "prompt": "Optional - Created automatically by create_prompt() method using system/human message templates",
+      "other_params": "callback_manager (Optional), output_parser (Optional), system_message_prefix, system_message_suffix, human_message, format_instructions, input_variables"
+    },
+    "prompt_requirements": {
+      "required_variables": [
+        "input",
+        "agent_scratchpad"
+      ],
+      "variable_descriptions": {
+        "input": "The input question/query from the user",
+        "agent_scratchpad": "The agent's working memory containing previous thoughts, actions, and observations"
+      },
+      "special_placeholders": [],
+      "prompt_pattern": "ChatPromptTemplate with SystemMessagePromptTemplate (containing tools info and format instructions) and HumanMessagePromptTemplate (containing {input} and {agent_scratchpad})",
+      "hub_pull_pattern": "Not found - uses create_prompt() method instead"
+    },
+    "usage_example": "agent = ChatAgent.from_llm_and_tools(\n    llm=llm,\n    tools=tools,\n    system_message_prefix=\"Answer the following questions as best you can. You have access to the following tools:\",\n    system_message_suffix=\"Begin! Reminder to always use the exact characters `Final Answer` when responding.\",\n    human_message=\"{input}\\n\\n{agent_scratchpad}\"\n)",
+    "input_format": "String input in the form of a question or task that the agent needs to complete",
+    "output_format": "Either AgentAction (containing action name and action_input in JSON format) or AgentFinish (containing final answer after 'Final Answer:' prefix)",
+    "special_requirements": [
+      "Tools must accept single input (validated by validate_tools_single_input)",
+      "Agent is deprecated as of version 0.1.0 with removal planned for 1.0",
+      "Output must follow specific JSON format for actions: {\"action\": \"tool_name\", \"action_input\": \"input_value\"}",
+      "Agent uses 'Observation:' as a stop sequence",
+      "Final answers must be prefixed with 'Final Answer:'"
+    ],
+    "agent_type": "chat",
+    "execution_pattern": "Should be wrapped in AgentExecutor for execution, following the Thought/Action/Observation loop until reaching Final Answer"
+  },
+  "generation_success": true,
+  "app_py_generated": true,
+  "config_used": {
+    "llm_model": "claude-opus-4-20250514",
+    "temperature": 0.7,
+    "max_tokens": 2000,
+    "default_tools": [
+      "search",
+      "calculator"
+    ],
+    "default_input": "Hello, how can you help me?",
+    "agent_config": {
+      "verbose": true,
+      "max_iterations": 10,
+      "early_stopping_method": "generate"
+    },
+    "output_format": "json",
+    "include_metadata": true,
+    "config_loading": {
+      "load_input_json": true,
+      "allow_config_override": true
+    },
+    "error_handling": {
+      "log_level": "INFO",
+      "save_errors_to_output": true
+    },
+    "tool_config": {
+      "handle_import_errors": true,
+      "warn_on_missing_tools": true
+    }
+  }
+}
